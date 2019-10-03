@@ -24,8 +24,8 @@
     <div class="wrapper">
        
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/posts">MegaTravelShare</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -33,10 +33,18 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
+        <a class="nav-link" href="/user/<%=session[:user_id]%>">Profile</a>
+      </li> 
+      <% if session[:user_id] %>
+   
+        <a class="nav-link" href="/user/logout">Log Out</a>
+      <% else %>
+          <a class="nav-link" href="/user/login">Log In</a>
+          <a class="nav-link" href="/user/signup">Sign Up</a>
+      <% end %>
+      
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Find Destination</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,7 +68,14 @@
   </div>
 </nav>
 
-
+        
+  <%if @error %>  
+       <div class='flash fatal'><%= @error %> </div>
+  <% end %>
+     
+  <%if @notice %>  
+       <div class='flash fatal'><%= @notice %> </div>
+  <% end %>
         <%= yield %>
 
       <footer class="branding">

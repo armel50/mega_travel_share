@@ -39,7 +39,7 @@ class PostController < ApplicationController
             @post = Post.find(params[:id])
             erb :"post/edit" 
         else 
-            redirect "/user/login"
+            redirect "/user/login" 
         end
     end
 
