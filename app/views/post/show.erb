@@ -1,0 +1,8 @@
+<h1>this the show page for the post</h1> 
+<%=@post.title%> 
+<img src="<%=@post.picture%>" alt="picture" height="150" width="150">
+<%= @post.description %> 
+<%= @post.created_at %> 
+<%= @post.user.email %>
+
+ <a href= "/posts/<%=@post.id%>/edit">Edit</a>

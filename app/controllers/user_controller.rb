@@ -24,6 +24,7 @@ class UserController < ApplicationController
             session[:user_id] = @user.id
             redirect "/user/#{@user.id}"
             else 
+                "<h3>Please try again</h3>"
                 redirect '/user/login'
         end  
 
