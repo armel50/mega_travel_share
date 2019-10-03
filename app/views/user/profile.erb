@@ -1,19 +1,24 @@
 <h1>This is the Profile page<h1> 
 <h2>You are signed in as: <%=@user.email%> </h2>
 <a href= '/user/logout'>Log Out</a> 
+<br> 
+<a href='/posts/new'>Add New Post</a>
 
 <%@user.posts.each do |post|%>
 
     <%=post.title%>
     <br>
-    <img src="<%=post.picture%>" alt="picture" height="100" width="100"> 
+    <img src="<%=post.picture%>" alt="picture" height="300" width="300"> 
     <br>
     <%=post.description%>
     <br>
     
     <a href= "/posts/<%=post.id%>/edit">Edit</a>
      <a href= "/posts/<%=post.id%>">Show</a>
-    <a href="#">Delete</a>
+    <form action="/posts/<%=post.id %>" method = "POST"> 
+    <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
+    <button>DELETE </button>
+</form>
    <br>
    <br>
 <% end %>

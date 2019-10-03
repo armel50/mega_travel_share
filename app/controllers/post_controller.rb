@@ -28,7 +28,12 @@ class PostController < ApplicationController
         end
     end
 
-
+    get '/posts/:id/delete' do 
+        if session[:user_id] 
+        
+            redirect 'user/login'
+        end
+    end
     get '/posts/:id/edit' do 
         if session[:user_id]
             @post = Post.find(params[:id])
@@ -38,7 +43,11 @@ class PostController < ApplicationController
         end
     end
 
-
+    delete '/posts/:id' do 
+        post= Post.find(params[:id]) 
+        post.delete 
+        redirect "/user/#{session[:user_id]}"
+    end
 
     patch '/posts/:id' do 
         if params[:title] =="" || params[:description] =="" || params[:picture] == "" 

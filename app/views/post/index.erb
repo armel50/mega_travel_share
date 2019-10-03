@@ -1,12 +1,16 @@
 <% @posts.each do |post| %> 
-    <%= post.title %> 
-<br>
+    <%= post.title %>
+    <br>
+   <img src="<%=post.picture%>" alt="picture" height="200" width="200">
+   <br>
     <%= post.description %> 
 
-<br>
-    <%= post.picture %>
      <a href= "/posts/<%=post.id%>/edit">Edit</a>
      <a href= "/posts/<%=post.id%>">Show</a>
+     <form action="/posts/<%=post.id %>" method = "POST"> 
+        <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
+        <button>DELETE </button>
+    </form>
 <br> 
 <br>
 <% end %>
