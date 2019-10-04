@@ -43,7 +43,8 @@ class PostController < ApplicationController
         end
     end
 
-    delete '/posts/:id' do 
+    delete '/posts/:id' do
+        
         post= Post.find(params[:id]) 
         post.delete 
         redirect "/user/#{session[:user_id]}"
@@ -61,7 +62,9 @@ class PostController < ApplicationController
         
     end
 
-    get '/posts/:id' do 
+    get '/posts/:id' do
+        @error =flash[:error]  if flash[:error]  
+        
         @post = Post.find(params[:id])
         erb :"post/show"
     end
