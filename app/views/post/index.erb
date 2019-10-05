@@ -4,13 +4,15 @@
    <img src="<%=post.picture%>" alt="picture" height="200" width="200">
    <br>
     <%= post.description %> 
-
+    <a href= "/posts/<%=post.id%>">Show</a>
+    <% if post.user.id == session[:user_id ]%>
      <a href= "/posts/<%=post.id%>/edit">Edit</a>
-     <a href= "/posts/<%=post.id%>">Show</a>
+     
      <form action="/posts/<%=post.id %>" method = "POST"> 
         <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
         <button>DELETE </button>
     </form>
+    <% end %>
 <br> 
 <br>
 <% end %>

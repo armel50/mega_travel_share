@@ -15,10 +15,12 @@
      <%= comment.user.email %> <br> 
         <%= comment.content  %>
         <%= comment.created_at%>
+    <% if comment.user.id == session[:user_id ]%>  
     <form action="/posts/<%=@post.id%>/comments/<%=comment.id%>" method = "POST"> 
         <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
         <button>DELETE </button>
     </form>
+    <% end %>
     <br> <br> 
     <% end %>
 
@@ -27,9 +29,10 @@
         <input type= "text" id="comment" name= "comment[content]">
         <button>Add comment</button>
     </form>
-
+<% if @post.user.id == session[:user_id ]%>
  <a href= "/posts/<%=@post.id%>/edit">Edit</a>
  <form action="/posts/<%=@post.id %>" method = "POST"> 
     <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
     <button>DELETE </button>
-</form>
+</form> 
+<%end%>
