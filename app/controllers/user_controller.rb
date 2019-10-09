@@ -70,6 +70,7 @@ class UserController < ApplicationController
 
     get '/user/:user_id/followings' do 
         if session[:user_id] 
+            @notice =  flash[:notice] if flash[:notice]
             @user = User.find(params[:user_id]) 
             erb :"user/followings"
         else 
@@ -80,6 +81,8 @@ class UserController < ApplicationController
 
     get '/user/:user_id/followers' do 
         if session[:user_id]
+            @notice =  flash[:notice] if flash[:notice]
+
             @user = User.find(params[:user_id])
             erb :"user/followers"
         else 

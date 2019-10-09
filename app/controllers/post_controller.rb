@@ -4,10 +4,10 @@ class PostController < ApplicationController
         @notice =   flash[:notice] if   flash[:notice] 
         if session[:user_id] 
             @posts = Post.all 
-           
+            @user = User.find(session[:user_id]) 
         else
          @posts = Post.all 
-         @user = User.find(session[:user_id])
+       
         end
         erb :"post/index"
     end

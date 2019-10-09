@@ -2,13 +2,15 @@
 <div class="row">
     <% @posts.each do |post| %> 
     <div class = "col-lg-4">
+    <div style="width:55%;" >
     <a href="/user/<%=post.user.id%>"> <%= post.user.email %></a>
       <%if session[:user_id] != post.user.id %>
-      <%if @user && !@user.followings.include?(post.user)%>
-     <form  action="/follow/<%=post.user.id%>" method="POST"><button class ="btn btn-sm btn-outline-dark" type="submit">follow</button></form>
-   <% end %> 
+      <% if @user && !@user.followings.include?( post.user) %>
+     <form  class ="float-right" action="/follow/<%=post.user.id%>" method="POST"><button class ="btn btn-sm btn-outline-dark" type="submit">follow</button></form>
+       <% end %>
+   <% end %>       
 
-   <% end %>
+    </div>
     <div class="card my-4" style="width: 20rem;">
 
   
