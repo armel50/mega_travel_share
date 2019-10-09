@@ -15,7 +15,7 @@ class UserController < ApplicationController
                 flash[:notice] = "You are successfully Signed Up."
                 redirect "/user/#{new_user.id}"
                 else 
-                    flash[:error] = "This email is already being used."
+                    flash[:error] = "This email is already in use."
                     redirect '/user/signup' 
             end
             
@@ -54,17 +54,45 @@ class UserController < ApplicationController
         redirect '/user/login'
     end
 
-    get '/user/:id' do 
-        if session[:user_id] 
-            @notice = flash[:notice] if flash[:notice]
-            @user = User.find(session[:user_id]) 
-            erb :"user/profile" 
 
-        else
-            redirect 'user/login'
+    get '/user/friends' do 
+        if session[:user_id]  
+            user = User.find(session[:user_id]) 
+            @friends = user.friends
+        
+            erb :"user/friends" 
+        else 
+            flash[:error] = "You need to log in to see your friends"
+            redirect '/user/login'
         end
         
+    end
+
+    get '/user/:user_id/followings' do 
+        if session[:user_id] 
+            @user = User.find(params[:user_id]) 
+            erb :"user/followings"
+        else 
+            flash[:error] = "You need to sign in to view the people you follow."
+            redirect "/user/login"
+        end
     end 
 
-  
+    get '/user/:user_id/followers' do 
+        if session[:user_id]
+            @user = User.find(params[:user_id])
+            erb :"user/followers"
+        else 
+            flash[:error] = "You need to sign in to view your followers."  
+        end
+    end
+
+    get '/user/:id' do 
+       
+            @notice = flash[:notice] if flash[:notice]
+            @user = User.find(params[:id]) 
+        
+            erb :"user/profile" 
+                  
+    end 
 end

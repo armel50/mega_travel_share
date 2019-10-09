@@ -1,18 +1,40 @@
-<% @posts.each do |post| %> 
-    <%= post.title %>
-    <br>
-   <img src="<%=post.picture%>" alt="picture" height="200" width="200">
-   <br>
-    <%= post.description %> 
-    <a href= "/posts/<%=post.id%>">Show</a>
-    <% if post.user.id == session[:user_id ]%>
-     <a href= "/posts/<%=post.id%>/edit">Edit</a>
-     
-     <form action="/posts/<%=post.id %>" method = "POST"> 
-        <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
-        <button>DELETE </button>
-    </form>
+<div class="container">
+<div class="row">
+    <% @posts.each do |post| %> 
+    <div class = "col-lg-4">
+    <a href="/user/<%=post.user.id%>"> <%= post.user.email %></a>
+      <%if session[:user_id] != post.user.id %>
+      <%if @user && !@user.followings.include?(post.user)%>
+     <form  action="/follow/<%=post.user.id%>" method="POST"><button class ="btn btn-sm btn-outline-dark" type="submit">follow</button></form>
+   <% end %> 
+
+   <% end %>
+    <div class="card my-4" style="width: 20rem;">
+
+  
+   <img  class="card-img-top" height="400" src="<%=post.picture%>" alt="picture" >
+        <div class="card-body">
+            <h5 class="card-title"> <%= post.title %></h5>
+            <p class="card-text"> <%= post.description[0..100] %>...</p>
+            
+                <a class= "btn btn-info" href= "/posts/<%=post.id%>">Show</a>
+                <% if post.user.id == session[:user_id ]%>
+                <a class= "btn btn-warning ml-4" href= "/posts/<%=post.id%>/edit">Edit</a>
+                
+                <form class = "float-right" action="/posts/<%=post.id %>" method = "POST"> 
+                    <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
+                    <button class = "btn btn-danger">DELETE </button>
+                </form>
+                <% end %>
+        </div> 
+    </div>  
+    </div>
+        
+
+ 
     <% end %>
-<br> 
-<br>
-<% end %>
+          
+
+   
+  </div>
+</div>

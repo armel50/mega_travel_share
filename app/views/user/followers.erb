@@ -1,0 +1,5 @@
+
+<div class= "justify-content-center"><h1><span><%=@user.followers.size %></span> followers</h1></div>
+<% @user.followers.each do |follower|%>  
+     <a href = "/user/<%=follower.id%>"><%= follower.email %></a><br>
+<%end%>

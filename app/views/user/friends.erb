@@ -1,0 +1,8 @@
+this is the friend page 
+<br>
+
+<% @friends.each do |friend|%>
+   
+   <a href="/user/<%=friend.id%>"><%=friend.email%></a>is now following you. 
+    <br>
+<% end %>

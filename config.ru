@@ -5,6 +5,7 @@ if ActiveRecord::Migrator.needs_migration?
 end
 use Rack::MethodOverride
 use CommentController
+use FollowingController
 use PostController
 use UserController
 run ApplicationController

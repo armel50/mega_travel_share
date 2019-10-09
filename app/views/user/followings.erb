@@ -1,0 +1,6 @@
+
+<div class= "mx-auto"><h1> <span id= "following_num"><%=@user.followings.size %></span> Following<h1></div>
+<% @user.followings.each do |following|%>  
+   <a href = "/user/<%=following.id%>"> <%= following.email %></a> <br>
+<%end%> 
+

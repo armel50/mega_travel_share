@@ -1,24 +1,31 @@
-<h1>This is the Profile page<h1> 
-<h2>You are signed in as: <%=@user.email%> </h2>
-<a href= '/user/logout'>Log Out</a> 
-<br> 
-<a href='/posts/new'>Add New Post</a>
-
-<%@user.posts.each do |post|%>
-
-    <%=post.title%>
-    <br>
-    <img src="<%=post.picture%>" alt="picture" height="300" width="300"> 
-    <br>
-    <%=post.description%>
-    <br>
-    
-    <a href= "/posts/<%=post.id%>/edit">Edit</a>
-     <a href= "/posts/<%=post.id%>">Show</a>
-    <form action="/posts/<%=post.id %>" method = "POST"> 
-    <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
-    <button>DELETE </button>
-</form>
-   <br>
-   <br>
+<h3> <a href="/user/<%=@user.id%>/followers"><%=@user.followers.size%>followers</a>  <a href="/user/<%=@user.id%>/followings"><%= @user.followings.size%> following</a> <h3> 
+<% if session[:user_id] && @user.id == session[:user_id]%>
+<h5 class= "text-right" >You are signed in as: <%=@user.email%> </h5> <hr>
+<a href='/posts/new'><i class="fa fa-plus-circle"> </i>New Post</a> 
 <% end %>
+<div class= "container"> 
+<div class ="row">
+<%@user.posts.each do |post|%> 
+        <div class ="col-lg-4">
+            <div class="card my-4" style="width: 20rem; ">
+                <img class="card-img-top" height="400" src="<%=post.picture%>" alt="picture"> 
+                <div class="card-body">
+                    <h5 class="card-title"> <%= post.title %> </h5>
+                    <p class="card-text">  <%=post.description[0..100]%>...</p>
+                
+                    <a class = "btn btn-info" href= "/posts/<%=post.id%>">Show</a> 
+                    <% if post.user.id == session[:user_id ] %>
+
+                    <a class ="btn btn-warning ml-4" href= "/posts/<%=post.id%>/edit">Edit</a>
+                    
+                    <form  class = "float-right" action="/posts/<%=post.id %>" method = "POST"> 
+                        <input type= "hidden" id= "hidden" name= "_method" value = "DELETE">
+                        <button class= "btn btn-danger ">DELETE </button>
+                    </form> 
+                    <% end %>
+                </div>
+            </div>
+        </div>   
+<% end %>
+</div>    
+</div>

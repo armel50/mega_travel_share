@@ -1,7 +1,14 @@
 class PostController < ApplicationController
 
     get '/posts' do
-        @posts = Post.all 
+        @notice =   flash[:notice] if   flash[:notice] 
+        if session[:user_id] 
+            @posts = Post.all 
+           
+        else
+         @posts = Post.all 
+         @user = User.find(session[:user_id])
+        end
         erb :"post/index"
     end
 
@@ -15,7 +22,7 @@ class PostController < ApplicationController
         
     end  
     post '/posts' do 
-        p params
+        
         if params[:title]=="" || params[:picture]=="" || params[:description]=="" 
             redirect "/posts/new" 
         else
@@ -36,6 +43,7 @@ class PostController < ApplicationController
     end
     get '/posts/:id/edit' do 
         if session[:user_id]
+            @error = flash[:error] if flash[:error]
             @post = Post.find(params[:id])
             erb :"post/edit" 
         else 
@@ -52,6 +60,7 @@ class PostController < ApplicationController
 
     patch '/posts/:id' do 
         if params[:title] =="" || params[:description] =="" || params[:picture] == "" 
+            flash[:error] = "Title, picture, and description can not be blank."
             redirect "/posts/#{params[:id]}/edit" 
         else 
             post = Post.find(params[:id])  
@@ -64,8 +73,13 @@ class PostController < ApplicationController
 
     get '/posts/:id' do
         @error =flash[:error]  if flash[:error]  
-        
-        @post = Post.find(params[:id])
+        if session[:user_id]
+            @user = User.find(session[:user_id])
+            @post = Post.find(params[:id]) 
+        else
+            @post = Post.find(params[:id]) 
+
+        end
         erb :"post/show"
     end
 end
