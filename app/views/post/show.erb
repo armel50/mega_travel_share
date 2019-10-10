@@ -5,8 +5,8 @@
   <form class="d-flex justify-content-center"  action="/follow/<%=@post.user.id%>" method="POST"><button class ="btn btn-sm btn-outline-dark" type="submit">follow</button></form>
 <%end%>
 <%end%>
-<div class="card mx-auto" style="width: 40rem;">
-  <img class="card-img-top" src="<%=@post.picture%>" alt="picture" height="600" width="100">
+<div class="card mx-auto" style="width: 35rem;">
+  <img class="card-img-top" src="<%=@post.picture%>" alt="picture" height="550" width="100">
   <div> 
       <% if  @user && @post.likers.include?(@user) %> 
       
@@ -39,7 +39,7 @@
  
   </div>
 </div>
-    <div class="card mx-auto" style="width: 40rem;">
+    <div class="card mx-auto" style="width:35rem;">
   <div class="card-header">
     Comment Section
   </div>

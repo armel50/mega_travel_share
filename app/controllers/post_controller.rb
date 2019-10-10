@@ -79,10 +79,27 @@ class PostController < ApplicationController
     end
 
     patch '/posts/:id' do 
-        if params[:title] =="" || params[:description] =="" || params[:picture] == "" 
+        if params[:title] =="" || params[:description] =="" 
             flash[:error] = "Title, picture, and description can not be blank."
+        
             redirect "/posts/#{params[:id]}/edit" 
         else 
+
+            if  params[:picture] == "" 
+                
+                if params[:file]== nil  || params[:file]== "" 
+                    flash[:error] = "please upload a picture or enter the url of a picture"
+                    redirect back
+                else
+                  binding.pry
+                     @filename = params[:file][:filename]
+                    file = params[:file][:tempfile]
+                    File.open("./public/#{@filename}", 'wb') do |f|
+                       f.write(file.read)
+                    end 
+                    params[:picture]= "/#{@filename}"
+                end
+            end
             post = Post.find(params[:id])  
             post.update(title: params[:title], description: params[:description], picture: params[:picture]) 
 
@@ -104,25 +121,32 @@ class PostController < ApplicationController
         erb :"post/show"
     end
 
-    post '/images' do 
-     
-        @filename = params[:file][:filename]
-        file = params[:file][:tempfile]
-        File.open("./public/#{@filename}", 'wb') do |f|
-          f.write(file.read)
-        end
-        
-        redirect to "/images/#{@filename}"
-      
-    end  
+  
 
-     
+     post "/posts/:id/like" do 
+         if session[:user_id]
+            @user = User.find(session[:user_id])
+            @post = Post.find(params[:id])  
+            new_like = Like.create(user_id: @user.id, post_id: @post.id) if !Like.find_by(post_id: @post.id, user_id: @user.id) 
+            @post.likes << new_like if new_like
+            @user.likes << new_like if new_like
+            @post.likers << @user if !@post.likers.include?(@user)
+            flash[:notice] = "You just liked #{@post.user.email}'s post." 
+            redirect back
+         else 
+            flash[:error] = "You need to login to like a post."
+            redirect "/user/login" 
+         end
+     end 
 
-   get '/images/:par' do
-           @url = params[:par]
-           p @url
-    erb :"dumies/dumies"
-   end
+     delete '/posts/:id/like' do
+        @post = Post.find(params[:id]) 
+        @user = User.find(session[:user_id]) 
+        like = Like.find_by(post_id: @post.id, user_id: @user.id) 
+        like.delete if like
+        flash[:notice] = "You just unliked #{@post.user.email}'s post." 
+        redirect back
+     end
 
 end
 

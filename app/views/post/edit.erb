@@ -1,5 +1,5 @@
 
-<form action ="/posts/<%= @post.id %>" method= "POST">
+<form action ="/posts/<%= @post.id %>" method= "POST" enctype="multipart/form-data">
 <input name="_method" id="hidden" type= "hidden" value="PATCH">
 
   <div class="form-group">
@@ -7,10 +7,18 @@
     <input type="text" class="form-control" id="title" name = "title" value= "<%=@post.title%>">
   </div>
 
- <div class="form-group">
-    <label for="picture">Picture</label>
-    <input type="text" class="form-control" id="picture" name = "picture" value= "<%=@post.picture%>">
-  </div>
+
+<div class ="form-row">
+ <div class="form-group col-6">
+    <label for="picture">Enter Picture</label>
+    <input type="text" class="form-control" id="picture" name = "picture" placeholder = "Enter the image url" value= "<%=@post.picture%>">
+  </div> 
+  <div class="form-group col-1 d-flex align-items-center">-OR-</div>
+  <div class="form-group col-3 d-flex align-items-end">
+    <input  class=" d-flex align-items-center" type="file" name="file" id= "file">
+  </div> 
+</div>
+
 
   <div class="form-group">
     <label for="description">Description</label>

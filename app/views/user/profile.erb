@@ -7,8 +7,22 @@
 <div class ="row">
 <%@user.posts.each do |post|%> 
         <div class ="col-lg-4">
-            <div class="card my-4" style="width: 20rem; ">
-                <img class="card-img-top" height="400" src="<%=post.picture%>" alt="picture"> 
+            <div class="card my-4"   style="width: 20rem; ">
+                <img class="card-img-top" height=300 src="<%=post.picture%>" alt="picture"> 
+                 <div> 
+                    <% if  @user && post.likers.include?(@user) %> 
+                    
+                        <form class = "float-right" action= "/posts/<%=post.id%>/like" method = "POST">
+                            <input type= "hidden" name="_method" value="DELETE" id="hidden">
+                            <button class="btn btn-sm btn-danger"><%=post.likes.size%>,<i class="fa fa-heart"></i></button>
+                        </form> 
+                        <% else %> 
+                            <form class = "float-right" action= "/posts/<%=post.id%>/like" method = "POST">
+                            <button class="btn btn-sm btn-outline-danger"><%=post.likes.size%>,<i class="fa fa-heart"></i></button>
+                        </form> 
+                        <% end %> 
+                    </div>
+
                 <div class="card-body">
                     <h5 class="card-title"> <%= post.title %> </h5>
                     <p class="card-text">  <%=post.description[0..100]%>...</p>
