@@ -1,18 +1,22 @@
+require "pry"
 class PostController < ApplicationController
 
     get '/posts' do
         @notice =   flash[:notice] if   flash[:notice] 
         if session[:user_id] 
-            @posts = Post.all 
+            
+            @posts = Post.all  
+            
+
             @user = User.find(session[:user_id]) 
         else
          @posts = Post.all 
-       
         end
         erb :"post/index"
     end
 
     get '/posts/new' do 
+        @error =  flash[:error] if  flash[:error]
         if session[:user_id] 
             erb :"post/new"
       
@@ -23,9 +27,26 @@ class PostController < ApplicationController
     end  
     post '/posts' do 
         
-        if params[:title]=="" || params[:picture]=="" || params[:description]=="" 
+        if params[:title]=="" || params[:description]=="" 
+
             redirect "/posts/new" 
-        else
+        else 
+            if  params[:picture] == "" 
+                
+                if params[:file]== nil  || params[:file]== "" 
+                    flash[:error] = "please upload a picture or enter the url of a picture"
+                    redirect back
+                else 
+                  
+                    @filename = params[:file][:filename]
+                    file = params[:file][:tempfile]
+                    File.open("./public/#{@filename}", 'wb') do |f|
+                       f.write(file.read)
+                    end 
+                    params[:picture]= "/#{@filename}"
+                end
+          
+            end
              user = User.find(session[:user_id]) 
             new_post= Post.create(title: params[:title], picture: params[:picture], description: params[:description])  
            
@@ -33,11 +54,10 @@ class PostController < ApplicationController
 
             redirect "/posts/#{new_post.id}"
         end
-    end
+    end 
 
     get '/posts/:id/delete' do 
         if session[:user_id] 
-        
             redirect 'user/login'
         end
     end
@@ -72,7 +92,8 @@ class PostController < ApplicationController
     end
 
     get '/posts/:id' do
-        @error =flash[:error]  if flash[:error]  
+        @error =flash[:error]  if flash[:error]   
+        @notice = flash[:notice] if flash[:notice]
         if session[:user_id]
             @user = User.find(session[:user_id])
             @post = Post.find(params[:id]) 
@@ -82,4 +103,26 @@ class PostController < ApplicationController
         end
         erb :"post/show"
     end
+
+    post '/images' do 
+     
+        @filename = params[:file][:filename]
+        file = params[:file][:tempfile]
+        File.open("./public/#{@filename}", 'wb') do |f|
+          f.write(file.read)
+        end
+        
+        redirect to "/images/#{@filename}"
+      
+    end  
+
+     
+
+   get '/images/:par' do
+           @url = params[:par]
+           p @url
+    erb :"dumies/dumies"
+   end
+
 end
+

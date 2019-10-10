@@ -1,14 +1,16 @@
 
 <div class= "justify-content-center"><h1><span><%=@user.follower_relations.size %></span> followers</h1></div>
 <% @user.followers.each do |follower|%>  
-     <div style="width:18%;">
-         <a href = "/user/<%=follower.id%>"><%= follower.email %></a> <br>
-
-   <form class="float-right" action="/follow/<%= follower.id%>" method="POST"> 
-    
-        <button class="btn btn-sm btn-outline-primary">followback</button>
-   <form>
-   <br> 
+     <div style="width:20%;">
+         <a href = "/user/<%=follower.id%>"><%= follower.email %></a> 
+     <%if !@user.followings.include?(follower)%>
+          <form class="float-right" action="/follow/<%= follower.id%>" method="POST"> 
+          
+               <button class="btn btn-sm btn-outline-primary">followback</button>
+          <form>
+     <%end%>
+   <br>  
+   <br>
 
 </div>
 <%end%>

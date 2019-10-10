@@ -35,4 +35,8 @@ class CommentController < ApplicationController
       redirect "/posts/#{params[:post_id]}"
     end
 
+
+
+    
+
 end

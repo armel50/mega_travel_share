@@ -87,6 +87,7 @@ class UserController < ApplicationController
             erb :"user/followers"
         else 
             flash[:error] = "You need to sign in to view your followers."  
+            redirect "/user/login"
         end
     end
 

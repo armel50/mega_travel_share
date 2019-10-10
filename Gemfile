@@ -11,7 +11,9 @@ gem 'shotgun'
 gem 'pry'
 gem 'bcrypt'
 gem 'tux' 
-gem 'sinatra-flash'
+gem 'sinatra-flash' 
+gem 'rails' 
+gem 'carrierwave'
 
 
 group :test do
