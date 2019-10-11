@@ -10,7 +10,7 @@
             <div class="card my-4"   style="width: 20rem; ">
                 <img class="card-img-top" height=300 src="<%=post.picture%>" alt="picture"> 
                  <div> 
-                    <% if  @user && post.likers.include?(@user) %> 
+                    <% if  @checker && post.likers.include?(@checker) %> 
                     
                         <form class = "float-right" action= "/posts/<%=post.id%>/like" method = "POST">
                             <input type= "hidden" name="_method" value="DELETE" id="hidden">

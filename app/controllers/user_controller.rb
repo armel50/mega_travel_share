@@ -95,7 +95,7 @@ class UserController < ApplicationController
        
             @notice = flash[:notice] if flash[:notice]
             @user = User.find(params[:id]) 
-        
+            @checker = User.find(session[:user_id])
             erb :"user/profile" 
                   
     end 

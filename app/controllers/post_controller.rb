@@ -28,7 +28,7 @@ class PostController < ApplicationController
     post '/posts' do 
         
         if params[:title]=="" || params[:description]=="" 
-
+            flash[:error] = "The title or the description can not be blank."
             redirect "/posts/new" 
         else 
             if  params[:picture] == "" 
