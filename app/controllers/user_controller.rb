@@ -1,9 +1,14 @@
 class UserController < ApplicationController 
 
- 
     get '/user/signup' do
         @error =flash[:error]  if flash[:error]
-        erb :"user/sign_up"
+        if !Helper.logged_in?(session)
+            @current_path = request.path_info 
+            @action = @current_path.gsub("/user/","")
+            erb :"user/log_in_or_sign_up"
+        else
+            redirect "/posts"
+        end
     end 
 
     post '/user/signup' do
@@ -12,7 +17,7 @@ class UserController < ApplicationController
             if !User.find_by(email:params[:email] )
                 new_user = User.create(email: params[:email] ,password: params[:password]) 
                 session[:user_id] = new_user.id  
-                flash[:notice] = "You are successfully Signed Up."
+                flash[:notice] = "Welcome for the first time #{new_user.email}."
                 redirect "/user/#{new_user.id}"
                 else 
                     flash[:error] = "This email is already in use."
@@ -28,48 +33,36 @@ class UserController < ApplicationController
 
     get '/user/login' do 
         @error =flash[:error]  if flash[:error]
-        erb :"user/log_in"
+        if !Helper.logged_in?(session)
+            @current_path = request.path_info 
+            @action = @current_path.gsub("/user/","")
+            erb :"user/log_in_or_sign_up"
+        else
+            redirect "/posts"
+        end
     end 
 
     post '/user/login'  do 
         @user = User.find_by(email: params[:email]) 
         if @user && @user.authenticate(params[:password]) 
             session[:user_id] = @user.id
-            flash[:notice] = "You are successfully Signed In."
+            flash[:notice] = "Welcome back #{@user.email}."
             redirect "/user/#{@user.id}"
             else 
                 flash[:error]= "The email or password was wrong."
                 redirect '/user/login'
         end  
-
-        
-
         
     end
 
 
     get '/user/logout' do
-        p session
         session.clear
         redirect '/user/login'
     end
 
-
-    get '/user/friends' do 
-        if session[:user_id]  
-            user = User.find(session[:user_id]) 
-            @friends = user.friends
-        
-            erb :"user/friends" 
-        else 
-            flash[:error] = "You need to log in to see your friends"
-            redirect '/user/login'
-        end
-        
-    end
-
     get '/user/:user_id/followings' do 
-        if session[:user_id] 
+        if Helper.logged_in?(session)
             @notice =  flash[:notice] if flash[:notice]
             @user = User.find(params[:user_id]) 
             erb :"user/followings"
@@ -80,10 +73,9 @@ class UserController < ApplicationController
     end 
 
     get '/user/:user_id/followers' do 
-        if session[:user_id]
-            @notice =  flash[:notice] if flash[:notice]
-
-            @user = User.find(params[:user_id])
+        @notice =  flash[:notice] if flash[:notice]
+        @user = User.find(params[:user_id])
+        if Helper.logged_in?(session)
             erb :"user/followers"
         else 
             flash[:error] = "You need to sign in to view your followers."  
@@ -92,11 +84,14 @@ class UserController < ApplicationController
     end
 
     get '/user/:id' do 
-       
-            @notice = flash[:notice] if flash[:notice]
-            @user = User.find(params[:id]) 
-            @checker = User.find(session[:user_id])
-            erb :"user/profile" 
-                  
+            @notice = flash[:notice] if flash[:notice] 
+            if Helper.logged_in?(session)
+                @user = User.find(params[:id]) 
+                @current_user = Helper.current_user(session)
+                erb :"user/profile"   
+            else
+                flash[:error] = "Please log in to view a profile page"
+                redirect "user/login"     
+            end
     end 
 end

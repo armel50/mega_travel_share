@@ -1,8 +1,9 @@
 
-<form class="form-signin d-block justify-content-center" method= "POST" action = "/user/signup" >
+<form class="form-signin d-block justify-content-center" method= "POST" action = "<%=@current_path%>" >
   <div class="text-center mb-4">
     <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+    <h1 class="text-center h3 mb-3 font-weight-normal"><%= @action %> Here</h1>
+   
   </div>
 
   <div class="form-label-group">
@@ -15,6 +16,6 @@
     <label for="password">Password</label>
   </div>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
  
 </form>
