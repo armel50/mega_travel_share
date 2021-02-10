@@ -13,7 +13,7 @@ gem 'bcrypt'
 gem 'tux' 
 gem 'sinatra-flash' 
 gem 'rails' 
-gem 'carrierwave'
+gem 'carrierwave', '>= 1.3.2'
 
 
 group :test do
