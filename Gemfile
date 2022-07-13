@@ -12,7 +12,7 @@ gem 'pry'
 gem 'bcrypt'
 gem 'tux' 
 gem 'sinatra-flash' 
-gem 'rails' 
+gem 'rails' , '>= 5.2.8.1'
 gem 'carrierwave'
 
 
